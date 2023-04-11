@@ -1,0 +1,820 @@
+1 program moduleDeclarations otherModules1 driverModule otherModules2
+{
+    program.addr_syn = newNode("PROGRAM", moduleDeclarations.addr_syn, otherModules1.addr_syn, driverModule.addr_syn, otherModules2.addr_syn)
+    free(moduleDeclarations)
+    free(otherModules1)
+    free(driverModule)
+    free(otherModules2)
+}
+2 moduleDeclarations moduleDeclaration moduleDeclarations1
+{
+    moduleDeclarations.addr_syn= newNode("MODULEDECLARATIONS", moduleDeclarations.syn_List)
+    moduleDeclarations.syn_List= insert_At_Head(moduleDeclarations1.syn_List, moduleDeclaration.addr_syn)
+    free(moduleDeclarations1)
+    free(moduleDeclaration)
+}
+3 moduleDeclarations EPSILON
+{
+    moduleDeclarations.syn_List= NULL
+}
+4 moduleDeclaration DECLARE MODULE ID SEMICOL
+{
+    moduleDeclaration.addr_syn= ID.addr
+    free(DECLARE)
+    free(MODULE)
+    free(SEMICOL)
+}
+5 otherModules module otherModules1
+{
+    otherModules.addr_syn= newNode("OTHERMODULES", otherModules.syn_List)
+    otherModules.syn_List= insert_At_Head(otherModules1.syn_List, module.addr_syn)
+    free(module)
+    free(otherModules1)
+}
+6 otherModules EPSILON
+{
+    otherModules.syn_List= NULL
+}
+7 driverModule DRIVERDEF DRIVER PROGRAM DRIVERENDDEF moduleDef
+{
+    driverModule.addr_syn= newNode("DRIVERMODULE", moduleDef.addr_syn)
+    free(DRIVER)
+    free(DRIVERDEF)
+    free(PROGRAM)
+    free(DRIVERENDDEF)
+    free(moduleDef)
+}
+    
+8 module DEF MODULE ID ENDDEF TAKES INPUT SQBO input_plist SQBC SEMICOL ret moduleDef
+{
+    module.addr_syn= newNode("MODULE", ID.addr, input_plist.addr_syn, ret.addr_syn, moduledef.addr_syn)
+    free(DEF)
+    free(MODULE)
+    free(ENDDEF)
+    free(TAKES)
+    free(INPUT)
+    free(SQBO)
+    free(SQBC)
+    free(SEMICOL)
+    free(input_plist)
+    free(ret)
+    free(moduleDef)
+}
+9 ret RETURNS SQBO output_plist SQBC SEMICOL
+{
+    ret.addr_syn= newNode("RET", output_plist.addr_syn)
+    free(RETURNS)
+    free(SQBO)
+    free(SQBC)
+    free(SEMICOL)
+    free(output_plist)
+}
+10 ret EPSILON
+{
+    ret.addr_syn= newNode("RET", NULL)
+}
+11 input_plist ID COLON dataType input_plist2
+{
+    input_plist.addr_syn= newNode("INPUTPLIST", input_plist.syn_List)
+    input_plist.syn_List = insert_At_Head(input_plist2.syn_List, newNode("VARIABLE", ID.addr, dataType.addr_syn))
+    free(COLON)
+    free(dataType)
+    free(input_plist2)
+}
+12 input_plist2 COMMA ID COLON dataType input_plist2_1
+{
+    input_plist2.syn_List= insert_At_Head(input_plist2_1.syn_List, newNode("VARIABLE", ID.addr, dataType.addr_syn))
+    free(COMMA)
+    free(COLON)
+    free(dataType)
+    free(input_plist2_1)
+}
+13 input_plist2 EPSILON
+{
+    input_plist2.syn_List= NULL
+}
+14 output_plist ID COLON dataType output_plist2
+{
+    output_plist.syn_List = insert_At_Head(output_plist2.syn_List, newNode("VARIABLE", ID.addr, dataType.addr_syn))
+    free(COLON)
+    free(dataType)
+    free(output_plist2)
+}
+15 output_plist2 COMMA ID COLON dataType output_plist2_1
+{
+    output_plist.syn_List = insert_At_Head(output_plist2_1.syn_List, newNode("VARIABLE", ID.addr, dataType.addr_syn))
+    free(COLON)
+    free(COMMA)
+    free(dataType)
+    free(output_plist2_1)
+}
+16 output_plist2 EPSILON
+{
+    output_plist2.syn_List= NULL
+}
+17 dataType INTEGER
+{
+    dataType.addr_syn= INTEGER.addr
+}
+18 dataType REAL
+{
+    dataType.addr_syn= REAL.addr
+}
+19 dataType BOOLEAN
+{
+    dataType.addr_syn= BOOLEAN.addr
+}
+20 dataType ARRAY SQBO range_arr SQBC OF type
+{
+    dataType.addr_syn= newNode("ARRAY", range_arr.addr_syn, type.addr_syn)
+    free(ARRAY)
+    free(SQBO)
+    free(SQBC)
+    free(range_arr)
+    free(OF)
+    free(type)
+}
+21 range_arr index_arr1 RANGEOP index_arr2
+{
+    range_arr.addr_syn= newNode("RANGE", index_arr1.addr_syn, index_arr1.addr_syn)
+    free(index_arr1)
+    free(RANGEOP)
+    free(index_arr2)
+}
+22 index_arr sign ind
+{
+    index_arr.addr_syn= newNode("ELEMENT", sign.addr_syn, ind.addr_syn)
+    free(sign)
+    free(ind)
+}
+23 ind NUM
+{
+    ind.addr_syn= NUM.addr
+}
+24 ind ID
+{
+    ind.addr_syn= ID.addr
+}
+25 sign PLUS
+{
+    sign.addr_syn= PLUS.addr
+}
+26 sign MINUS
+{
+    sign.addr_syn= MINUS.addr
+}
+27 sign EPSILON
+{
+    sign.addr_syn= NULL
+}
+28 type INTEGER
+{
+    type.addr_syn= INTEGER.addr
+}
+29 type REAL
+{
+    type.addr_syn= REAL.addr
+}
+30 type BOOLEAN
+{
+    type.addr_syn= BOOLEAN.addr
+}
+31 moduleDef START statements END
+{
+    moduleDef.addr_syn= statements.addr_syn
+    free(START)
+    free(END)
+    free(statements)
+}
+32 statements statement statements1
+{
+    statements.addr_syn= newNode("STATEMENTS", statements.syn_List)
+    statements.syn_List = insert_At_Head(statements1.syn_List, statement.addr_syn)
+    free(statement1)
+    free(statement)
+}
+33 statements EPSILON
+{
+    statements.addr_syn= newNode("STATEMENTS", statements.syn_List)
+    statements.syn_List = NULL
+}
+34 statement ioStmt
+{
+    statement.addr_syn = ioStmt.addr_syn
+    free(ioStmt)
+}
+35 statement simpleStmt
+{
+    statement.addr_syn = simpleStmt.addr_syn
+    free(simpleStmt)
+}
+36 statement declareStmt
+{
+    statement.addr_syn = declareStmt.addr_syn
+    free(declareStmt)
+}
+37 statement conditionalStmt
+{
+    statement.addr_syn = conditionalStmt.addr_syn
+    free(conditionalStmt)
+}
+38 statement iterativeStmt
+{
+    statement.addr_syn = iterativeStmt.addr_syn
+    free(iterativeStmt)
+}
+39 ioStmt GET_VALUE BO ID BC SEMICOL
+{
+    ioStmt.addr_syn = newNode("GET_VALUE", ID.addr)
+    free(GET_VALUE)
+    free(BO)
+    free(BC)
+    free(SEMICOL)
+}
+40 ioStmt PRINT BO var2 BC SEMICOL
+{
+    ioStmt.addr_syn = newNode("PRINT", var2.addr_syn)
+    free(PRINT)
+    free(BO)
+    free(BC)
+    free(SEMICOL)
+    free(var2)
+}
+41 var2 ID whichID
+{
+    var2.addr_syn = ID.addr
+    whichID.addr_inh = var2.addr_syn
+    var2.addr_syn = whichID.addr_syn
+    free(whichID)
+}
+42 var2 NUM
+{
+    var2.addr_syn = NUM.addr
+}
+43 var2 RNUM
+{
+    var2.addr_syn = RNUM.addr
+}
+44 var2 boool
+{
+    var2.addr_syn = boool.addr_syn
+    free(boool)
+}
+45 boool TRUE
+{
+    boool.addr_syn = TRUE.addr
+}
+46 boool FALSE
+{
+    boool.addr_syn = FALSE.addr
+}
+47 whichID SQBO index_arr SQBC 
+{
+    whichID.addr_syn = newNode("ARRAY_ACCESS", whichID.addr_inh, index_arr.addr_syn)
+    free(SQBC)
+    free(SQBO)
+    free(index_arr)
+}
+48 whichID EPSILON
+{
+    whichID.addr_syn = whichID.addr_inh
+}
+49 simpleStmt assignmentStmt
+{
+    simpleStmt.addr_syn = assignmentStmt.addr_syn
+    free(assignmentStmt)
+}
+50 simpleStmt moduleReuseStmt
+{
+    simpleStmt.addr_syn = moduleReuseStmt.addr_syn
+    free(moduleReuseStmt)
+}
+51 assignmentStmt ID whichStmt
+{
+    assignmentStmt.addr_syn = ID.addr
+    whichStmt.addr_inh = assignmentStmt.addr_syn
+    assignmentStmt.addr_syn = whichStmt.addr_syn
+    free(whichStmt)
+}
+52 whichStmt lvalueIDStmt
+{
+    lvalueIDStmt.addr_inh = whichStmt.addr_inh
+    whichStmt.addr_syn = lvalueIDStmt.addr_syn
+    free(lvalueIDStmt)
+}
+53 whichStmt lvalueArrStmt
+{
+    lvalueArrStmt.addr_inh = whichStmt.addr_inh
+    whichStmt.addr_syn= lvalueArrStmt.addr_syn
+    free(lvalueArr)  
+}
+54 lvalueIDStmt ASSIGNOP expression SEMICOL
+{
+    lvalueIDStmt.addr_syn = newNode("ASSIGN", lvalueIDStmt.addr_inh, expression.addr_syn)
+    free(ASSIGNOP)
+    free(SEMICOL)
+    free(expression)
+}
+55 lvalueArrStmt SQBO arithmeticExprArr SQBC ASSIGNOP expression SEMICOL
+{
+    lvalueArrStmt.addr_syn = newNode("ARRAY_ASSIGN", newNode("ARRAY_ACCESS", lvalueArrStmt.addr_inh, arithmeticExprArr.addr_syn), expression.addr_syn)
+    free(SQBO)
+    free(SQBC)
+    free(arithmeticExprArr)
+    free(ASSIGNOP)
+    free(SEMICOL)
+    free(expression)
+}
+56 moduleReuseStmt optional USE MODULE ID WITH PARAMETERS paraList SEMICOL
+{
+    moduleReuseStmt.addr_syn= ID.addr
+    paraList.addr_inh= moduleReuseStmt.addr_syn
+    moduleReuseStmt.addr_syn =newNode("MODULEREUSE", optional.addr_syn, paraList.addr_syn)
+    free(optional)
+    free(USE)
+    free(MODULE)
+    free(WITH)
+    free(PARAMETERS)
+    free(SEMICOL)
+    free(paraList)
+}
+57 optional SQBO idList SQBC ASSIGNOP
+{
+    optional.addr_syn = idList.addr_syn
+    free(SQBO)
+    free(SQBC)
+    free(ASSIGNOP)
+    free(idList)
+}
+58 optional EPSILON
+{
+    optional.addr_syn = NULL
+}
+59 paraList sign var paraList2
+{
+    paraList.addr_syn= newNode("MODULE", paraList.addr_inh, paraList.syn_List)
+    paraList.syn_List= insert_At_Head(paraList2.syn_List, newNode("ELEMENT", sign.addr_syn, var.addr_syn))
+    free(sign)
+    free(var)
+    free(paraLis)
+}
+60 paraList2 COMMA sign var paraList2_1
+{
+    paraList2.syn_List= insert_At_Head(paraList2_1.syn_List, newNode("ELEMENT", sign.addr_syn, var.addr_syn))
+    free(COMMA)
+    free(sign)
+    free(var)
+    free(paraList2_1)
+}
+61 paraList2 EPSILON
+{
+    paraList2.syn_List= NULL
+}
+62 var NUM
+{
+    var.addr_syn= NUM.addr
+}
+63 var RNUM
+{
+    var.addr_syn= RNUM.addr
+}
+64 var boool
+{
+    var.addr_syn= boool.addr_syn
+    free(boool)
+}
+65 var ID whichID2
+{
+    var.addr_syn= ID.addr
+    whichID2.addr_inh= var.addr_syn
+    var.addr_syn= whichID2.addr_syn
+    free(whichID2)
+}
+66 idList ID idList2
+{
+    idList.addr_syn = newNode("IDLIST", idList.syn_List)
+    idList.syn_List = insert_At_Head(idList2.syn_List, ID.addr)
+    free(idList2)
+}
+67 idList2 COMMA ID idList2_1
+{
+    idList2.syn_List = insert_At_Head(idList2.syn_List, ID.addr)
+    free(idList2_1)
+    free(COMMA)
+}
+68 idList2 EPSILON
+{
+    idList2.syn_List = NULL
+}
+69 expression arithmeticOrBoolean
+{
+    expression.addr_syn= arithmeticOrBoolean.addr_syn
+    free(arithmeticOrBoolean)
+}
+70 expression unaryExpr
+{
+    expression.addr_syn= unaryExpr.addr_syn
+    free(unaryExpr)
+}
+71 arithmeticOrBoolean term1 logicalExpr
+{
+    arithmeticOrBoolean.addr_syn= term1.addr_syn
+    logicalExpr.addr_inh= arithmeticOrBoolean.addr_syn
+    arithmeticOrBoolean.addr_syn= logicalExpr.addr_syn
+    free(term1)
+    free(logicalExpr)
+}
+72 term1 arithmeticExpr relationalExpr
+{
+    term1.addr_syn= arithmeticExpr.addr_syn
+    relationalExpr.addr_inh = term1.addr_syn
+    term1.addr_syn = relationalExpr.addr_syn
+    free(arithmeticExpr)
+    free(relationalExpr)
+}
+73 term1 boool
+{
+    term1.addr_syn = boool.addr_syn
+    free(boool)
+}
+74 arithmeticExpr term2 arithmeticExpr2
+{
+    arithmeticExpr.addr_syn = term2.addr_syn
+    arithmeticExpr2.addr_inh = arithmeticExpr.addr_syn
+    arithmeticExpr.addr_syn = arithmeticExpr2.addr_syn
+    free(term2)
+    free(arithmeticExpr2)
+}
+75 arithmeticExpr2 op1 term2 arithmeticExpr2_1
+{
+    arithmeticExpr2.addr_syn = newNode("ARITHMETICOP", op1.addr_syn, arithmeticExpr2.addr_inh, term.addr_syn)
+    arithmeticExpr2_1.addr_inh = arithmeticExpr2.addr_syn
+    arithmeticExpr2.addr_syn = arithmeticExpr2_1.addr_syn
+    free(op1)
+    free(term2)
+    free(arithmeticExpr2_1)
+}
+76 arithmeticExpr2 EPSILON
+{
+    arithmeticExpr2.addr_syn = arithmeticExpr2.addr_inh
+}
+77 term2 factor term3
+{
+    term2.addr_syn = factor.addr_syn
+    term3.addr_inh = term2.addr_syn
+    term2.addr_syn = term3.addr_syn
+    free(term3)
+    free(factor)
+}
+78 term3 op2 factor term3_1
+{
+    term3.addr_syn = newNode("ARITHMETICOP", op2.addr_syn, term3.addr_inh, factor.addr_syn)
+    term3_1.addr_inh = term3.addr_syn
+    term3.addr_syn =term3_1.addr_syn
+    free(op2)
+    free(factor)
+    free(term3_1)
+}
+79 term3 EPSILON
+{
+    term3.addr_syn = term3.addr_inh
+}
+80 factor BO arithmeticOrBoolean BC
+{
+    factor.addr_syn = arithmeticOrBoolean.addr_syn
+    free(BO)
+    free(BC)
+    free(arithmeticOrBoolean)
+}
+81 factor NUM
+{
+    factor.addr_syn = NUM.addr
+}
+82 factor RNUM
+{
+    factor.addr_syn = RNUM.addr
+}
+83 factor ID whichID2
+{
+    factor.addr_syn = ID.addr
+    whichID2.addr_inh = factor.addr_syn
+    factor.addr_syn = whichID.addr_syn
+    free(whichID2)
+}
+84 whichID2 SQBO arrExpr SQBC
+{
+    whichID2.addr_syn= newNode("ARRAY_ACCESS", whichID2.addr_inh, arrExpr.addr_syn)
+    free(SQBO)
+    free(SQBC)
+    free(arrExpr)
+}
+85 whichID2 EPSILON
+{
+    whichID2.addr_syn= whichID2.addr_inh
+}
+86 relationalExpr relationalOP arithmeticExpr
+{
+    relationalExpr.addr_syn= newNode("RELATIONALOP", relationalOP.addr_syn, relationalExpr.addr_inh, arithmeticExpr.addr_syn)
+    free(relationalOP)
+    free(arithmeticExpr)
+}
+87 relationalExpr EPSILON
+{
+    relationalExpr.addr_syn= relationalExpr.addr_inh
+}
+88 relationalOP LT
+{
+    relationalOP.addr_syn = LT.addr
+}
+89 relationalOP LE
+{
+    relationalOP.addr_syn = LE.addr
+}
+90 relationalOP GT
+{
+    relationalOP.addr_syn = GT.addr
+}
+91 relationalOP GE
+{
+    relationalOP.addr_syn = GE.addr
+}
+92 relationalOP EQ
+{
+    relationalOP.addr_syn = EQ.addr
+}
+93 relationalOP NE
+{
+    relationalOP.addr_syn = NE.addr
+}
+94 logicalExpr logicalOP term1 logicalExpr1
+{
+    logicalExpr.addr_syn= newNode("LOGICALOP", logicalOP.addr_syn, logicalExpr.addr_inh, term1.addr_syn)
+    logicalExpr1.addr_inh= logicalExpr.addr_syn
+    logicalExpr.addr_syn= logicalExpr1.addr_syn
+    free(logicalOP)
+    free(term1)
+    free(logicalExpr1)
+}
+95 logicalExpr EPSILON
+{
+    logicalExpr.addr_syn= logicalExpr.addr_inh
+}
+96 logicalOP AND
+{
+    logicalOP.addr_syn = AND.addr
+}
+97 logicalOP OR
+{
+    logicalOP.addr_syn = OR.addr
+}
+98 op1 PLUS
+{
+    op1.addr_syn = PLUS.addr
+}
+99 op1 MINUS
+{
+    op1.addr_syn = MINUS.addr
+}
+100 op2 MUL
+{
+    op1.addr_syn = MUL.addr
+}
+101 op2 DIV
+{
+    op1.addr_syn = DIV.addr
+}
+102 unaryExpr unaryOP new_NT
+{
+    unaryExpr.addr_syn= newNode("UNARYOP", unaryOP.addr_syn, new_NT.addr_syn)
+    free(unaryOP)
+    free(new_NT)
+}
+103 new_NT BO arithmeticExpr BC 
+{
+    new_NT.addr_syn= arithmeticExpr.addr_syn
+    free(BO)
+    free(BC)
+    free(arithmeticExpr)
+}
+104 new_NT idNumRnum 
+{
+    new_NT.addr_syn= idNumRnum.addr_syn
+    free(idNumRnum)
+}
+105 unaryOP PLUS
+{
+    unaryOP.addr_syn = PLUS.addr
+}
+106 unaryOP MINUS
+{
+    unaryOP.addr_syn = MINUS.addr
+}
+107 idNumRnum ID
+{
+    idNumRnum.addr_syn = ID.addr
+}
+108 idNumRnum NUM
+{
+    idNumRnum.addr_syn = NUM.addr
+}
+109 idNumRnum RNUM
+{
+    idNumRnum.addr_syn = RNUM.addr
+}
+110 arrExpr op1 term6
+{
+    arrExpr.addr_syn= op1.addr_syn
+    term6.addr_inh= arrExpr.addr_syn
+    arrExpr.addr_syn= term6.addr_syn
+    free(op1)
+    free(tem6)
+}
+111 arrExpr arithmeticExprArr
+{
+    arrExpr.addr_syn= arithmeticExprArr.addr_syn
+    free(arithmeticExprArr)
+}
+112 term6 ind
+{
+    term6.addr_syn= newNode("ARRAY_INDEX", term6.addr_inh, ind.addr_syn)
+    free(ind)
+}
+113 term6 BO arithmeticExprArr BC
+{
+    term6.addr_syn= newNode("ARRAY_INDEX", term6.addr_inh, arithmeticExpr.addr_syn)
+    free(BO)
+    free(arithmeticExprArr)
+    free(BC)
+}
+114 arithmeticExprArr term4 arithmeticExprArr2
+{
+    arithmeticExprArr.addr_syn = term4.addr_syn
+    arithmeticExprArr2.addr_inh = arithmeticExprArr.addr_syn
+    arithmeticExprArr.addr_syn = arithmeticExprArr2.addr_syn
+    free(term4)
+    free(arithmeticExprArr2)
+}
+115 arithmeticExprArr2 op1 term4 arithmeticExprArr2_1
+{
+    arithmeticExprArr2.addr_syn = newNode("ARITHMETICOP", op1.addr_syn, arithmeticExprArr2.addr_inh, term4.addr_syn)
+    arithmeticExprArr2_1.addr_inh = arithmeticExprArr2.addr_syn
+    arithmeticExprArr2.addr_syn = arithmeticExprArr2_1.addr_syn
+    free(term4)
+    free(op1)
+    free(arithmeticExprArr2_1)
+}
+116 arithmeticExprArr2 EPSILON
+{
+    arithmeticExprArr2.addr_syn = arithmeticExprArr2.addr_inh
+}
+117 term4 factor2 term5
+{
+    term4.addr_syn = factor2.addr_syn
+    term5.addr_inh = term4.addr_syn
+    term4.addr_syn = term5.addr_syn
+    free(term5)
+    free(factor2)
+}
+118 term5 op2 factor2 term5_1
+{
+    term5.addr_syn = newNode("ARITHMETICOP", op2.addr_syn, term5.addr_inh, factor2.addr_syn)
+    term5_1.addr_inh = term5.addr_syn
+    term5.addr_syn = term5_1.addr_syn
+    free(op2)
+    free(factor2)
+    free(term5_1)
+}
+119 term5 EPSILON
+{
+    term5.addr_syn = term5.addr_inh
+}
+120 factor2 BO arithmeticExprArr BC
+{
+    factor2.addr_syn = arithmeticExprArr.addr_syn
+    free(BO)
+    free(BC)
+    free(arithmeticExprArr)
+}
+121 factor2 boool
+{
+    factor2.addr_syn = boool.addr_syn
+    free(boool)
+}
+122 factor2 ID
+{
+    factor2.addr_syn = ID.addr
+}
+123 factor2 NUM
+{
+    factor2.addr_syn = NUM.addr
+}
+124 declareStmt DECLARE idList COLON dataType SEMICOL
+{
+    declareStmt.addr_syn= newNode("DECLARE", idList.addr_syn, dataType.addr_syn)
+    free(DECLARE)
+    free(idList)
+    free(COLON)
+    free(dataType)
+    free(SEMICOL)
+
+}
+125 conditionalStmt SWITCH BO ID BC START caseStmts default1 END
+{
+    conditionalStmt.addr_syn = newNode("SWITCH", ID.addr, caseStmts.addr_syn, default1.addr_syn)
+    free(BO)
+    free(BC)
+    free(START)
+    free(END)
+    free(SWITCH)
+    free(caseStmts)
+    free(default1)
+}
+126 caseStmts CASE value COLON statements BREAK SEMICOL caseStmts2
+{
+    caseStmts.addr_syn = newNode("CASESTMTS", caseStmts.syn_List)
+    caseStmts.syn_List = insert_At_Head(caseStmt2.syn_List, newNode("CASE", value.addr_syn, statements.addr_syn))
+    free(SEMICOL)
+    free(COLON)
+    free(BREAK)
+    free(CASE)
+    free(value)
+    free(statements)
+    free(caseStmts2)
+}
+127 caseStmts2 CASE value COLON statements BREAK SEMICOL caseStmt2_1
+{
+    caseStmt2.syn_List = insert_At_Head(caseStmt2_1.syn_List, newNode("CASE", value.addr_syn, statements.addr_syn))
+    free(SEMICOL)
+    free(COLON)
+    free(BREAK)
+    free(CASE)
+    free(value)
+    free(statements)
+    free(caseStmts2_1)
+}
+128 caseStmts2 EPSILON
+{
+    caseStmt2.syn_List = NULL
+}
+129 value NUM
+{
+    value.addr_syn= NUM.addr
+}
+130 value TRUE
+{
+    value.addr_syn= TRUE.addr
+}
+131 value FALSE
+{
+    value.addr_syn= FALSE.addr
+}
+132 default1 DEFAULT COLON statements BREAK SEMICOL
+{
+    default1.addr_syn = newNode("DEFAULT", statements.addr_syn)
+    free(COLON)
+    free(DEFAULT)
+    free(statements)
+    free(BREAK)
+    free(SEMICOL)
+}
+133 default1 EPSILON
+{
+    default1.addr_syn = NULL
+}
+134 iterativeStmt FOR BO ID IN range_loop BC START statements END
+{
+    iterativeStmt.addr_syn = newNode("FOR", ID.addr, range_loop.addr_syn, ].addr_syn)
+    free(START)
+    free(FOR)
+    free(statements)
+    free(IN)
+    free(range_loop)
+    free(END)
+    free(IN)
+    free(BO)
+    free(BC)
+}
+135 iterativeStmt WHILE BO arithmeticOrBoolean BC START statements END
+{
+    iterativeStmt.addr_syn = newNode("WHILE", arithmeticOrBoolean.addr_syn, statements.addr_syn)
+    free(WHILE)
+    free(START)
+    free(END)
+    free(BO)
+    free(BC)
+    free(arithmeticOrBoolean)
+    free(statements)
+}
+136 range_loop index_loop RANGEOP index_loop1
+{
+    range_loop.addr_syn = newNode("RANGE", index_loop.addr_syn, index_loop1.addr_syn)
+    free(index_loop)
+    free(RANGEOP)
+    free(index_loop1)
+}
+137 index_loop sign NUM
+{
+    index_loop.addr_syn = newNode("ELEMENT", sign.addr_syn, NUM.addr)
+    free(index_loop)
+    free(sign)
+}
